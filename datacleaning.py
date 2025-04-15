@@ -13,9 +13,32 @@ def read_whatsapp_chat(file_path: str) -> pandas.DataFrame:
     added_u_msg = "added you"
     # tagging_pattern = regx
 
-    ### TODOS
+    #
+    # TODOS
+    #
+    
     # 1. read the chat file
+    with open(file_path, 'r', encoding='utf=8') as f:
+        lines = f.readlines()
+        
     # 2. apply filters to remove unwanted lines
+    filtered_lines = []
+    for line in lines:
+        if (
+            e2e_msg not in line and
+            media_msg not in line and
+            # regx check: not re.search(email, line) and
+            # regx check: not re.search(url, line) and
+            edited_msg not in line and
+            deleted_msg not in line and
+            null_msg != line.split(" ")[-1] and
+            created_group_msg not in line and
+            added_u_msg not in line
+        ):
+            line = line.replace(edited_msg, "").strip()
+            # line = re.sub(tagging_pattern, "", line).strip()
+            filtered_lines.append(line)
+    
     # 3. regex to match whatsapp messages
     # 4. Create a dataframe
     # 5. Convert timestamps to datatime object
